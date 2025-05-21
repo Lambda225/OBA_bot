@@ -1,6 +1,8 @@
 # Importation des librairies nécessaire
-from model import asr, tts, sf, model_intent, tokenizer_intent, intent_labels
+from model import asr, tts, detect_intention
+#model_intent, tokenizer_intent, intent_labels, 
 import torch
+import soundfile as sf
 
 
 
@@ -12,11 +14,12 @@ def process_audio_local(audio_path):
     print("Texte reçu :", audio_text)
 
     # 2. Détection de l'Intention (BERT)
-    inputs = tokenizer_intent(audio_text, return_tensors="pt")
-    outputs = model_intent(**inputs)
-    predicted_label = torch.argmax(outputs.logits, dim=1).item()
-    detected_intent = intent_labels[predicted_label]
-    print("Intention détectée :", detected_intent)
+    inputs = detect_intention(audio_text, return_tensors="pt")
+    #outputs = model_intent(**inputs)
+    #predicted_label = torch.argmax(outputs.logits, dim=1).item()
+    #detected_intent = intent_labels[predicted_label]
+    print("Intention détectée :", inputs["labels"][0])
+    detected_intent = inputs["labels"][0]
 
     # 3. Génération de Réponse (GPT)
     response_text = f"Vous avez demandé : {detected_intent}."

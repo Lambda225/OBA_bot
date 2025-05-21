@@ -1,0 +1,5 @@
+# Ignorer l'environnement virtuel
+env/
+
+# Ignorer le fichier app.py
+.env
